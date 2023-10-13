@@ -10,15 +10,13 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  cross:
-    strategy:
-      matrix:
-        include:
-          - name: windows-amd64-v3
-            goos: windows
-            goarch: amd64
-            goamd64: v3
+strategy:
+    matrix:
+    include:
+    - name: windows-amd64-v3
+    goos: windows
+    goarch: amd64
+    goamd64: v3
             
   build:
     runs-on: ubuntu-latest
