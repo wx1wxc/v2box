@@ -7,22 +7,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-strategy:
-    matrix:
-    include:
-    - name: windows-amd64-v3
-    goos: windows
-    goarch: amd64
-    goamd64: v3            
-    build:
+
+  build:
     runs-on: ubuntu-latest
-    env:
-      GOOS: ${{ matrix.goos }}
-      GOARCH: ${{ matrix.goarch }}
-      GOAMD64: ${{ matrix.goamd64 }}
-      GOARM: ${{ matrix.goarm }}
-      GOMIPS: ${{ matrix.gomips }}
-      CGO_ENABLED: 0
     steps:
     - uses: actions/checkout@v3
       with:
