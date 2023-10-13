@@ -25,10 +25,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
+      - name: Setup Node.js 16
         uses: actions/setup-node@v2
         with:
-          node-version: 16 # 设置Node.js版本为16
+          node-version: 16
 
       - name: Setup Go
         uses: actions/setup-go@v2
