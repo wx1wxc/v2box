@@ -1,34 +1,44 @@
 name: Go
 on:
-  workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+      - '!.github/workflows/debug.yml'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-
   build:
+    name:build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: Setup Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: ${{ steps.version.outputs.go_version }}
-    - name: Cache go module
-      uses: actions/cache@v3
-      with:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get latest go version
+        id: version
+        run: |
+          echo go_version=$(curl -s https://raw.githubusercontent.com/actions/go-versions/main/versions-manifest.json | grep -oE '"version": "[0-9]{1}.[0-9]{1,}(.[0-9]{1,})?"' | head -1 | cut -d':' -f2 | sed 's/ //g; s/"//g') >> $GITHUB_OUTPUT
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ steps.version.outputs.go_version }}
+      - name: Cache go module
+        uses: actions/cache@v3
+        with:
           path: |
             ~/go/pkg/mod
           key: go-${{ hashFiles('**/go.sum') }}
-    - name: Build
-      id: build
-      run: make
-    - name: Upload artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: v2box-${{ matrix.name }}
-        path: v2box*
+      - name: Build
+        id: build
+        run: make
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: v2box-${{ matrix.name }}
+          path: v2box*
