@@ -1,4 +1,4 @@
-name: go
+name: Debug build
 
 on:
   workflow_dispatch:
@@ -17,20 +17,10 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        goos: [windows, linux, darwin, freebsd]
-        goarch: [amd64, 386, arm64]
-        goamd64: [v1, v3]
-        goarm: [5, 6, 7]
-        gomips: [softfloat, hardfloat]
-
     env:
-      GOOS: ${{ matrix.goos }}
-      GOARCH: ${{ matrix.goarch }}
-      GOAMD64: ${{ matrix.goamd64 }}
-      GOARM: ${{ matrix.goarm }}
-      GOMIPS: ${{ matrix.gomips }}
+      GOOS: windows
+      GOARCH: amd64
+      GOAMD64: v3
       CGO_ENABLED: 0
 
     steps:
@@ -61,5 +51,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: v2box-${{ runner.os }}-${{ matrix.goos }}-${{ matrix.goarch }}
+          name: v2box-windows-amd64-v3
           path: v2box*
